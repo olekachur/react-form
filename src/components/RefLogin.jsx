@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function RefLogin() {
+  const [formIsInvalid, setFormIsInvalid] = useState(false);
   const email = useRef();
   const password = useRef();
 
@@ -10,7 +11,14 @@ export default function RefLogin() {
     const enteredEmail = email.current.value;
     const enteredPassword = password.current.value;
 
-    console.log(enteredEmail, enteredPassword);
+    const emailIsInvalid = !enteredEmail.includes('@');
+
+    if (emailIsInvalid) {
+      setFormIsInvalid(true);
+      return;
+    }
+
+    setFormIsInvalid(false);
   }
 
   return (
@@ -26,6 +34,7 @@ export default function RefLogin() {
             name="email"
             ref={email}
           />
+          <div className="control-error">{formIsInvalid && <p>Please enter valid email</p>}</div>
         </div>
 
         <div className="control no-margin">
