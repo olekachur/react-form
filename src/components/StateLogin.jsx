@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isEmail, isNotEmpty, hasMinLength, isEqualsToOtherValue } from '../util/validation';
 import Input from "./Input";
 
 export default function StateLogin() {
@@ -31,8 +32,8 @@ export default function StateLogin() {
         ));
     }
 
-    const emailIsInvalid = didEdit.email && !enteredValues.email.includes('@');
-    const passwordIsInvalid = didEdit.email && !enteredValues.email.includes('@');
+    const emailIsInvalid = didEdit.email && isEmail(enteredValues.email) && isNotEmpty(enteredValues.email);
+    const passwordIsInvalid = didEdit.password && !hasMinLength(enteredValues.password, 6) && isNotEmpty(enteredValues.password);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -53,6 +54,7 @@ export default function StateLogin() {
                     onChange={(event) => handleEnteredValues('email', event)}
                     onBlur={() => handleInputBlur('email')}
                     value={enteredValues.email}
+                    error={emailIsInvalid && 'Please enter a valid email'}
                 />
                 <Input
                     lable='Password'
@@ -62,6 +64,7 @@ export default function StateLogin() {
                     onChange={(event) => handleEnteredValues('password', event)}
                     onBlur={() => handleInputBlur('password')}
                     value={enteredValues.password}
+                    error={passwordIsInvalid && 'Please enter a valid password'}
                 />
             </div>
             <p className="form-actions">
